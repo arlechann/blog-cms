@@ -1,0 +1,22 @@
+version: "3.8"
+services:
+  app:
+    build:
+      context: ./docker/app
+    image: blog-cms
+    depends_on:
+      - db
+    env_file: .env
+
+  web:
+    build: ./docker/web
+    image: reverse-proxy:1.19.0
+    depends_on:
+      - app
+    ports:
+      - "8080:80"
+
+  db:
+    image: postgres:12.3
+    env_file: .env
+
